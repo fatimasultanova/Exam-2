@@ -1,10 +1,10 @@
 package enums;
 
 public enum Options {
-    EXIT("[0].Exit!"),
-    START("[1].Start!"),
-    ADD("[2].Add!"),
-    SEE("[3].See history!");
+    EXIT("\n[0].Exit!"),
+    START("\n[1].Start!"),
+    ADD("\n[2].Add!"),
+    SEE("\n[3].See history!");
 
 
 
