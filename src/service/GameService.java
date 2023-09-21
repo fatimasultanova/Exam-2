@@ -1,13 +1,20 @@
 package service;
 
+import exceptions.AppExceptions;
+import exceptions.ExceptionsMessage;
+import globalStrings.GlobalStrings;
 import model.Word;
 import service.inter.FileServicInter;
 import service.inter.GameServiceInter;
 import util.InputUtil;
+import util.MenuItil;
 import util.RandomUtil;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 public class GameService implements GameServiceInter {
     private final FileServicInter fileServic;
@@ -25,6 +32,10 @@ public class GameService implements GameServiceInter {
 
 
         System.out.println("------------>Start<------------");
+
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-YYYY HH:mm:ss");
+        String localDateTime = LocalDateTime.now().format(dateTimeFormatter);
         LocalTime startTime = LocalTime.now();
         for (int i = 0; i < 10; i++) {
             int randomIndex = RandomUtil.randomIndex(words.length);
@@ -41,13 +52,17 @@ public class GameService implements GameServiceInter {
                 i--;
             }
         }
-        double time = startTime.getSecond()-LocalTime.now().getSecond();
+
+        double time = ChronoUnit.SECONDS.between(startTime,LocalTime.now());
 
 
         System.out.println("----------END------------");
         System.out.println("Your point: " + point + "\n" +
                 "Your level: " + level(point) +"\n" +
                 "Time: " + time);
+        String log = "New game started at -> Time: "+localDateTime +", Point - " + point+
+                " Game Time: " + time;
+        MenuItil.applicationLogs(GlobalStrings.GAME_LOGS_FILE_NAME,log);
 
 
     }
@@ -55,12 +70,50 @@ public class GameService implements GameServiceInter {
 
     @Override
     public void add() {
-        String key = InputUtil.inputString("English: ");
-        String value = InputUtil.inputString("Azerbaijan: ");
+       try {
+           String key = InputUtil.inputString("English: ");
+           char [] keyCharArray = key.toCharArray();
+           for (int i = 0; i < keyCharArray.length; i++) {
+               if (keyCharArray[i]>=32 && keyCharArray[i]<=47 ){
+                   throw new AppExceptions(ExceptionsMessage.ILLEGAL_CHARACTER_EXCEPTION);
+               }
+               if (keyCharArray[i]>=58 && keyCharArray[i]<=64 ){
+                   throw new AppExceptions(ExceptionsMessage.ILLEGAL_CHARACTER_EXCEPTION);
+               }
+               if (keyCharArray[i]>=91 && keyCharArray[i]<=96 ){
+                   throw new AppExceptions(ExceptionsMessage.ILLEGAL_CHARACTER_EXCEPTION);
+               }
+               if (keyCharArray[i]>=123 && keyCharArray[i]<=126 ){
+                   throw new AppExceptions(ExceptionsMessage.ILLEGAL_CHARACTER_EXCEPTION);
+               }
+           }
 
-        boolean isAdded = fileServic.writeFile(new Word(key,value));
+           String value = InputUtil.inputString("Azerbaijan: ");
+           char [] valueCharArray = key.toCharArray();
+           for (int i = 0; i < keyCharArray.length; i++) {
+               if (valueCharArray[i]>=32 && valueCharArray[i]<=47 ){
+                   throw new AppExceptions(ExceptionsMessage.ILLEGAL_CHARACTER_EXCEPTION);
+               }
+               if (valueCharArray[i]>=58 && valueCharArray[i]<=64 ){
+                   throw new AppExceptions(ExceptionsMessage.ILLEGAL_CHARACTER_EXCEPTION);
+               }
+               if (valueCharArray[i]>=91 && valueCharArray[i]<=96 ){
+                   throw new AppExceptions(ExceptionsMessage.ILLEGAL_CHARACTER_EXCEPTION);
+               }
+               if (valueCharArray[i]>=123 && valueCharArray[i]<=126 ){
+                   throw new AppExceptions(ExceptionsMessage.ILLEGAL_CHARACTER_EXCEPTION);
+               }
+           }
 
-        System.out.println(isAdded ? "Successfully added!" : "Failed!");
+
+           boolean isAdded = fileServic.writeFile(new Word(key,value));
+
+           System.out.println(isAdded ? "Successfully added!" : "Failed!");
+
+       }catch (Exception ex){
+           System.out.println(ex.getMessage());
+
+       }
 
     }
 
