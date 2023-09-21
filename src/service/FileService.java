@@ -7,6 +7,8 @@ import service.inter.FileServicInter;
 import java.io.*;
 
 public class FileService implements FileServicInter {
+
+
     @Override
     public Word[] readFile() {
         File file = new File(GlobalStrings.GAME_DICTIONARY_FILE_NAME);
@@ -18,10 +20,9 @@ public class FileService implements FileServicInter {
             Word [] words = new Word[keyAndValues.length];
 
             for (int i = 0; i < words.length; i++) {
-                String [] keyAndValue = keyAndValues[i].split(" : ");
+                String [] keyAndValue = keyAndValues[i].split(":");
                 words[i] =new Word(keyAndValue[0], keyAndValue[1]);
             }
-
             return words;
 
         }catch (IOException exception){

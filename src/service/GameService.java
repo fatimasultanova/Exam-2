@@ -35,14 +35,13 @@ public class GameService implements GameServiceInter {
 
                 if (value.equalsIgnoreCase(word.getValue())) {
                     point++;
-                    break;
                 }
                 word.setShowed(true);
             } else {
                 i--;
             }
         }
-        double time = LocalTime.now().getSecond()-startTime.getSecond();
+        double time = startTime.getSecond()-LocalTime.now().getSecond();
 
 
         System.out.println("----------END------------");
