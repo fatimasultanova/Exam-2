@@ -12,7 +12,7 @@ public class Word {
 
     @Override
     public String toString() {
-        return "\n"+key+ " : "+value;
+        return "\n"+key+ ":"+value;
     }
 
     public String getKey() {
